@@ -1,3 +1,4 @@
 [
-  { "name": "оболочка", "path": "dist/assets/index-*.js", "limit": "100 kB", "gzip": true }
+  { "name": "оболочка", "path": "dist/assets/index-*.js", "limit": "100 kB", "gzip": true },
+  { "name": "3D-чанк", "path": "dist/assets/SceneRoot-*.js", "limit": "420 kB", "gzip": true }
 ]
