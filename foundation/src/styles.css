@@ -71,3 +71,15 @@ main { max-width: 880px; margin: 0 auto; padding: 0 16px 96px; }
   main { padding-right: 16px; }
   body:has(.card) main { max-width: calc(100% - 432px); margin-left: 0; padding-left: 24px; }
 }
+
+.app { position: relative; min-height: 100dvh; }
+.stage { position: fixed; inset: 0; z-index: 0; background: var(--bg); }
+.stage canvas { display: block; }
+.top, .eras { position: relative; z-index: 2; }
+.scene-on .top { background: linear-gradient(180deg, rgba(7, 9, 18, 0.85), rgba(7, 9, 18, 0)); }
+.scene-on .eras { background: transparent; }
+.spoilers { position: relative; z-index: 3; }
+.notice button, .poster button { font: inherit; margin-left: 8px; background: var(--line); border: 0; color: var(--fg); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.poster { background: radial-gradient(ellipse at 50% 30%, #1a2148, var(--bg) 70%); border: 1px solid var(--line); border-radius: 16px; padding: 40px 16px; text-align: center; margin-bottom: 16px; }
+.poster p { margin: 0 0 12px; color: var(--muted); }
+.debug { position: fixed; left: 8px; bottom: 8px; z-index: 4; margin: 0; font: 12px/1.4 ui-monospace, monospace; color: #9fe; background: rgba(0, 0, 0, 0.5); padding: 4px 8px; border-radius: 6px; pointer-events: none; }
