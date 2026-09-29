@@ -34,6 +34,8 @@ describe('buildGalaxy', () => {
   it('побайтно одинаков при одном сиде', () => {
     const again = buildGalaxy(1, 5000)
     expect(Buffer.from(again.positions.buffer).equals(Buffer.from(cloud.positions.buffer))).toBe(true)
+    expect(Buffer.from(again.colors.buffer).equals(Buffer.from(cloud.colors.buffer))).toBe(true)
+    expect(Buffer.from(again.scales.buffer).equals(Buffer.from(cloud.scales.buffer))).toBe(true)
   })
   it('другой сид — другие точки', () => {
     expect(buildGalaxy(2, 5000).positions[0]).not.toBe(cloud.positions[0])
@@ -46,7 +48,7 @@ describe('buildGalaxy', () => {
       maxY = Math.max(maxY, Math.abs(y))
     }
     expect(maxR).toBeLessThanOrEqual(GALAXY.radius * 1.5)
-    expect(maxY).toBeLessThanOrEqual(GALAXY.radius * 0.35)
+    expect(maxY).toBeLessThanOrEqual(GALAXY.radius * 0.28 * 0.3 * 1.01) // jitter ≤ 0.28·r, сплющено ×0.3
   })
   it('цвета в [0, 1], масштаб в [0.5, 1.5]', () => {
     for (let i = 0; i < cloud.colors.length; i++) {
@@ -57,6 +59,21 @@ describe('buildGalaxy', () => {
       expect(cloud.scales[i]).toBeGreaterThanOrEqual(0.5)
       expect(cloud.scales[i]).toBeLessThanOrEqual(1.5)
     }
+  })
+  it('точки лежат на рукавах по тому же правилу, что planetXYZ', () => {
+    const { arms, radius, spin } = GALAXY
+    let residual = 0
+    for (let i = 0; i < cloud.count; i++) {
+      const x = cloud.positions[i * 3], z = cloud.positions[i * 3 + 2]
+      const r = Math.hypot(x, z)
+      const expected = ((i % arms) / arms) * Math.PI * 2 + (r / radius) * spin
+      const actual = Math.atan2(z, x)
+      let d = Math.abs((actual - expected) % (Math.PI * 2))
+      d = Math.min(d, Math.PI * 2 - d)
+      residual += d
+    }
+    // с дрожанием средний уход от рукава маленький; без правила рукавов было бы ~π/2
+    expect(residual / cloud.count).toBeLessThan(0.35)
   })
 })
 
