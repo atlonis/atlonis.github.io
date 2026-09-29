@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { DataIndex } from '../data/indexDataset'
-import { useSceneStore } from '../scene/sceneStore'
+import { NAV_DURATION, useSceneStore } from '../scene/sceneStore'
 import { useStore } from '../state/store'
 
 export function EraNav({ index }: { index: DataIndex }) {
@@ -9,7 +9,7 @@ export function EraNav({ index }: { index: DataIndex }) {
   const go = (id: string) => {
     setEra(id)
     // Чип всегда летит к своей остановке, даже если eraId не изменился (сцена регистрирует scrollToEra, пока смонтирована).
-    useSceneStore.getState().scrollToEra?.(id, 0.8)
+    useSceneStore.getState().scrollToEra?.(id, NAV_DURATION)
     document.getElementById(`era-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
   return (

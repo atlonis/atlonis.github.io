@@ -7,12 +7,11 @@ import { useStore } from '../state/store'
 import { tweenTo } from './anim'
 import { activeEraFor, chronicleCamera, eraSpacing, eraStops, nearestStop, smoothstep } from './layout'
 import { tweenPalette } from './palette'
-import { markAlive, useSceneStore } from './sceneStore'
+import { markAlive, NAV_DURATION, useSceneStore } from './sceneStore'
 
 const SETTLE_IDLE_MS = 150
 const SETTLE_RANGE = 0.3
 const SETTLE_DURATION = 0.4
-const NAV_DURATION = 0.8
 const TILT_RANGE = 0.35
 const STOP_EPS = 0.02
 
@@ -33,6 +32,10 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
   const active = useRef(useSceneStore.getState().activeEraId || eraId)
   const lastScrollAt = useRef(0)
   const lastTop = useRef(-1)
+  // Палец или ползунок скроллбара прижаты: дотягивание не начинаем, даже если scrollTop стоит на месте.
+  const held = useRef(false)
+  // blocked (телефон + открытая карточка) читаем через ref, чтобы слушатели ввода не пересоздавались.
+  const blockedRef = useRef(blocked)
   const settleTimer = useRef<number | null>(null)
   const settling = useRef<gsap.core.Tween | null>(null)
   // Пока камера не доехала до эры из URL (первый полёт после монтирования), кадры на t=0 не должны менять эру, палитру и URL.
@@ -99,22 +102,42 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
     if (Math.abs(scroll.offset - stop.t) > STOP_EPS * spacing) scrollToEra(eraId, NAV_DURATION)
   }, [eraId, scrollToEra, scroll, stops, spacing])
 
-  // Живой ввод пользователя отменяет полёт GSAP, чтобы колесо и палец не боролись с твином.
+  useEffect(() => { blockedRef.current = blocked }, [blocked])
+
+  // Живой ввод пользователя отменяет полёт GSAP, чтобы колесо и палец не боролись с твином. При открытой карточке на телефоне
+  // (blocked) скролл заблокирован, и тап по сцене не должен прерывать полёт, начатый открытием карточки другой эры.
+  // held не зависит от blocked. Касания ведём по touch-событиям: когда браузер берёт жест на прокрутку, он шлёт pointercancel,
+  // хотя палец ещё прижат. Указатели мыши и пера ведём по pointer-событиям. Отпускание слушаем на window: pointerup после
+  // перетаскивания скроллбара до el может не дойти.
   useEffect(() => {
     const el = scroll.el
     const stopTween = () => {
+      if (blockedRef.current) return
       settling.current?.kill()
       settling.current = null
       arriving.current = false
     }
+    const press = (e: Event) => {
+      if (e.type !== 'pointerdown' || (e as PointerEvent).pointerType !== 'touch') held.current = true
+      stopTween()
+    }
+    const release = (e: Event) => {
+      if (e.type.startsWith('pointer') ? (e as PointerEvent).pointerType === 'touch' : (e as TouchEvent).touches.length > 0) return
+      held.current = false
+      invalidate()
+    }
     const opts = { passive: true }
     el.addEventListener('wheel', stopTween, opts)
-    el.addEventListener('touchstart', stopTween, opts)
-    el.addEventListener('pointerdown', stopTween, opts)
+    el.addEventListener('touchstart', press, opts)
+    el.addEventListener('pointerdown', press, opts)
+    const ups = ['pointerup', 'pointercancel', 'touchend', 'touchcancel'] as const
+    ups.forEach((type) => window.addEventListener(type, release, opts))
     return () => {
       el.removeEventListener('wheel', stopTween)
-      el.removeEventListener('touchstart', stopTween)
-      el.removeEventListener('pointerdown', stopTween)
+      el.removeEventListener('touchstart', press)
+      el.removeEventListener('pointerdown', press)
+      ups.forEach((type) => window.removeEventListener(type, release))
+      held.current = false
     }
   }, [scroll])
 
@@ -160,7 +183,7 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
       if (settleTimer.current) clearTimeout(settleTimer.current)
       // После остановки демпфирования кадров нет — просим один, чтобы проверить дотягивание.
       settleTimer.current = window.setTimeout(() => invalidate(), SETTLE_IDLE_MS + 30)
-    } else if (!settling.current && performance.now() - lastScrollAt.current > SETTLE_IDLE_MS) {
+    } else if (!settling.current && !held.current && performance.now() - lastScrollAt.current > SETTLE_IDLE_MS) {
       // Дотягиваем по нативной позиции, а не по offset: через 150 мс демпфированный offset ещё отстаёт и вернул бы камеру назад.
       const rest = nearestStop(stops, nativeT)
       if (rest.dist > STOP_EPS * spacing && rest.dist < SETTLE_RANGE * spacing) scrollToEra(rest.stop.id, SETTLE_DURATION)

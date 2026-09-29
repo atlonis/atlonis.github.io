@@ -1,6 +1,9 @@
 import { create } from 'zustand'
 import type { Tier } from './tier'
 
+/** Длительность полёта камеры к эре по чипу, hashchange и deep-link, секунды. */
+export const NAV_DURATION = 0.8
+
 interface SceneState {
   activeEraId: string
   tier: Tier
