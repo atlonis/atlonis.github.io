@@ -34,6 +34,10 @@ describe('eventT', () => {
     expect(eventT(ev(undefined, 'e3'), eras)).toBe(0.5)
     expect(eventT(ev(10, 'zzz'), eras)).toBeNull()
   })
+  it('на краях нити не выходит за [0, 1]', () => {
+    expect(eventT(ev(0, 'e1'), eras)).toBe(0)
+    expect(eventT(ev(420, 'e5'), eras)).toBe(1)
+  })
 })
 
 describe('nearestStop / activeEraFor', () => {
@@ -56,6 +60,8 @@ describe('smoothstep', () => {
     expect(smoothstep(0, 1, -1)).toBe(0)
     expect(smoothstep(0, 1, 2)).toBe(1)
     expect(smoothstep(0, 1, 0.5)).toBe(0.5)
+    expect(smoothstep(1, 1, 0.5)).toBe(0) // вырожденный интервал a === b: без NaN
+    expect(smoothstep(1, 1, 1)).toBe(1)
   })
 })
 

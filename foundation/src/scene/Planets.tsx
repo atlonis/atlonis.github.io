@@ -127,14 +127,24 @@ export function Planets({ index }: { index: DataIndex }) {
     invalidate()
   }, [planets, invalidate])
 
-  // Гашение планет вне активной эры: твин значений aDim.
+  // Гашение планет вне активной эры. Первый запуск (в т.ч. после перемонтирования Canvas) ставит значения сразу, без твина:
+  // иначе неактивные планеты вспыхивают яркими и только потом гаснут. Последующие смены эры — твин значений aDim.
   const dims = useRef<Record<string, number>>({})
+  const seeded = useRef(false)
   useEffect(() => {
     const targets: Record<string, number> = {}
-    planets.forEach((p) => {
-      if (dims.current[p.id] === undefined) dims.current[p.id] = 1
-      targets[p.id] = p.eras.includes(activeEraId) ? 1 : 0
-    })
+    planets.forEach((p) => { targets[p.id] = p.eras.includes(activeEraId) ? 1 : 0 })
+    if (!seeded.current) {
+      seeded.current = true
+      planets.forEach((p, i) => {
+        dims.current[p.id] = targets[p.id]
+        dimAttr.array[i] = targets[p.id]
+      })
+      dimAttr.needsUpdate = true
+      invalidate()
+      return
+    }
+    planets.forEach((p) => { if (dims.current[p.id] === undefined) dims.current[p.id] = 1 })
     const tween = tweenTo(dims.current, {
       ...targets,
       duration: 0.8,
@@ -145,7 +155,10 @@ export function Planets({ index }: { index: DataIndex }) {
       },
     })
     return () => { tween.kill() }
-  }, [activeEraId, planets, dimAttr])
+  }, [activeEraId, planets, dimAttr, invalidate])
+
+  // Курсор не залипает, если сцену размонтировали, пока мышь над планетой.
+  useEffect(() => () => { document.body.style.cursor = '' }, [])
 
   const onOver = (e: ThreeEvent<PointerEvent>) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; markAlive() }
   const onOut = () => { document.body.style.cursor = '' }

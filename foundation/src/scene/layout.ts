@@ -19,7 +19,7 @@ export function eraStops(eras: EraOut[]): Stop[] {
   })
 }
 
-/** Параметр события на нити: внутри своей эры смещается по году в пределах ±0.3 шага. */
+/** Параметр события на нити: внутри своей эры смещается по году в пределах ±0.3 шага; на краях нити зажат в [0, 1]. */
 export function eventT(ev: Event, eras: EraOut[]): number | null {
   const sorted = [...eras].sort((a, b) => a.order - b.order)
   const era = sorted.find((e) => e.id === ev.eras[0])
@@ -28,7 +28,7 @@ export function eventT(ev: Event, eras: EraOut[]): number | null {
   if (ev.year === undefined) return t
   const span = Math.max(era.years.end - era.years.start, 1)
   const frac = (ev.year - era.years.start) / span - 0.5
-  return t + frac * eraSpacing(sorted.length) * 0.6
+  return Math.min(1, Math.max(0, t + frac * eraSpacing(sorted.length) * 0.6))
 }
 
 export function nearestStop(stops: Stop[], t: number): { stop: Stop; dist: number } {
@@ -51,6 +51,7 @@ export function activeEraFor(stops: Stop[], t: number, currentId: string, hyster
 }
 
 export function smoothstep(a: number, b: number, x: number): number {
+  if (b === a) return x >= b ? 1 : 0
   const k = Math.min(Math.max((x - a) / (b - a), 0), 1)
   return k * k * (3 - 2 * k)
 }
