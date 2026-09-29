@@ -9,8 +9,10 @@ import { DebugStats } from './DebugStats'
 import { Dust } from './Dust'
 import { FrameMeter } from './FrameMeter'
 import { Galaxy } from './GalaxyLayer'
+import { Planets } from './Planets'
 import { setPaletteNow } from './palette'
 import { markAlive, useSceneStore } from './sceneStore'
+import { Thread } from './Thread'
 import { TIER_PARAMS, detectTier, readTierEnv } from './tier'
 
 class GLErrorBoundary extends Component<{ onError: () => void; children: ReactNode }, { failed: boolean }> {
@@ -63,6 +65,8 @@ export default function SceneRoot({ index }: { index: DataIndex }) {
         <Galaxy tier={tier} />
         <Dust tier={tier} />
         <Core />
+        <Planets index={index} />
+        <Thread index={index} />
       </Canvas>
     </GLErrorBoundary>
   )
