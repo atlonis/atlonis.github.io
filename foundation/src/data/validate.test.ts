@@ -60,4 +60,26 @@ describe('validateDataset', () => {
     const c = character('mule', ['e1'], { book: { presence: 'different', counterpart: 'trantor' } })
     expect(validateDataset([...base, c])).toContainEqual(expect.stringContaining('book.counterpart'))
   })
+  it('related[].id не существует', () => {
+    const c = character('x', ['e1'], { related: [{ id: 'ghost', role: { ru: 'друг' } }] })
+    expect(validateDataset([...base, c])).toContainEqual(expect.stringContaining('related → «ghost» не существует'))
+  })
+  it('character.faction должна быть фракцией', () => {
+    const c = character('x', ['e1'], { faction: 'trantor' })
+    expect(validateDataset([...base, c])).toContainEqual(expect.stringContaining('нужен faction'))
+  })
+  it('timeline.planet должна быть планетой', () => {
+    const c = character('x', ['e1'], { timeline: [{ era: 'e1', note: { ru: 'на Транторе' }, planet: 'empire' }] })
+    expect(validateDataset([...base, c])).toContainEqual(expect.stringContaining('timeline.planet'))
+  })
+  it('timeline.faction должна быть фракцией', () => {
+    const c = character('x', ['e1'], { timeline: [{ era: 'e1', note: { ru: 'служит' }, faction: 'trantor' }] })
+    expect(validateDataset([...base, c])).toContainEqual(expect.stringContaining('timeline.faction'))
+  })
+  it('event.planet должна быть планетой', () => {
+    expect(validateDataset([...base, event('x', ['e1'], { year: 0, planet: 'empire' })])).toContainEqual(expect.stringContaining('planet → «empire» это faction'))
+  })
+  it('эра с years.start > years.end', () => {
+    expect(validateDataset([era('e1', 1, 10, 0)])).toContainEqual(expect.stringContaining('years.start больше years.end'))
+  })
 })
