@@ -12,7 +12,7 @@ export function Dust({ tier }: { tier: Tier }) {
       new THREE.ShaderMaterial({
         vertexShader: DUST_VERT,
         fragmentShader: DUST_FRAG,
-        uniforms: { uSize: { value: 7 }, uPixelRatio: { value: 1 }, uScale: { value: 1 }, uOpacity: { value: 0.18 } },
+        uniforms: { uSize: { value: 5 }, uPixelRatio: { value: 1 }, uScale: { value: 1 }, uOpacity: { value: 0.18 } },
         transparent: true,
         depthWrite: false,
         depthTest: true,

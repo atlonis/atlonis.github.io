@@ -7,7 +7,7 @@ import { useStore } from '../state/store'
 import { tweenTo } from './anim'
 import { activeEraFor, chronicleCamera, eraSpacing, eraStops, nearestStop, smoothstep } from './layout'
 import { tweenPalette } from './palette'
-import { markAlive, NAV_DURATION, useSceneStore } from './sceneStore'
+import { getLastOffset, markAlive, NAV_DURATION, setLastOffset, useSceneStore } from './sceneStore'
 
 const SETTLE_IDLE_MS = 150
 const SETTLE_RANGE = 0.3
@@ -16,7 +16,7 @@ const TILT_RANGE = 0.35
 const STOP_EPS = 0.02
 
 /** Начальные стили scroll-div drei на телефоне с открытой карточкой: эффекты drei при монтировании выполняются позже эффектов CameraRig и перезаписали бы overflow. */
-const BLOCKED_STYLE: CSSProperties = { overflowY: 'hidden', touchAction: 'none' }
+const BLOCKED_STYLE: CSSProperties = { overflowY: 'hidden', touchAction: 'pinch-zoom' }
 
 /** Цель, к которой drei демпфирует offset (state.scroll). В публичный тип не входит; версия drei зафиксирована точной. */
 type ScrollTarget = { scroll: { current: number } }
@@ -84,9 +84,27 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
   }, [r3f, scroll])
 
   // Регистрация для EraNav и deep-link; стартовая позиция — эра из URL (через rAF: первое scroll-событие drei игнорирует).
+  // Если Canvas перемонтирован (смена тира) или пользователь вернулся из «Списка» и эра в URL не менялась, берём сохранённую позицию нити
+  // мгновенно: полёт из t=0 к последней зафиксированной эре откатил бы пользователя назад.
   useEffect(() => {
     useSceneStore.setState({ scrollToEra })
-    const raf = requestAnimationFrame(() => scrollToEra(useStore.getState().eraId, NAV_DURATION))
+    scroll.el.dataset.testid = 'thread-scroll' // стабильный крючок для Playwright: scroll-div создаёт drei
+    const raf = requestAnimationFrame(() => {
+      const eraNow = useStore.getState().eraId
+      const saved = useSceneStore.getState().tierLocked ? getLastOffset(eraNow) : null
+      const el = scroll.el
+      const max = el.scrollHeight - el.clientHeight
+      if (saved !== null && max > 0) {
+        el.scrollTop = saved * max
+        // Как в scrollToEra: первое scroll-событие drei игнорирует, а offset демпфируется от нуля, поэтому выставляем и цель, и сам offset.
+        ;(scroll as unknown as ScrollTarget).scroll.current = saved
+        scroll.offset = saved
+        arriving.current = false
+        invalidate()
+        return
+      }
+      scrollToEra(eraNow, NAV_DURATION)
+    })
     return () => {
       cancelAnimationFrame(raf)
       useSceneStore.setState({ scrollToEra: undefined })
@@ -96,7 +114,12 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
   // Внешняя смена эры (hashchange, карточка планеты другой эры) → едем к остановке. Сравниваем с реальной позицией скролла:
   // active.current в мёртвой зоне между дотягиванием и гистерезисом уже указывает на ближайшую эру, а eraId ещё старый.
   useEffect(() => {
-    if (arriving.current) return
+    if (arriving.current) {
+      // Первый полёт уже запущен (rAF отработал, arrivalT задан): перенацеливаем его на новую эру, иначе по прибытии кадр на старой остановке вернул бы старую эру в URL.
+      // До rAF ничего не делаем: колбэк читает свежий eraId сам.
+      if (arrivalT.current !== null) scrollToEra(eraId, NAV_DURATION)
+      return
+    }
     const stop = stops.find((s) => s.id === eraId)
     if (!stop) return
     if (Math.abs(scroll.offset - stop.t) > STOP_EPS * spacing) scrollToEra(eraId, NAV_DURATION)
@@ -118,6 +141,8 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
       arriving.current = false
     }
     const press = (e: Event) => {
+      // Правая и средняя кнопки не начинают жест прокрутки, а pointerup после контекстного меню (macOS) может не прийти: held залип бы.
+      if (e.type === 'pointerdown' && (e as PointerEvent).button !== 0) return
       if (e.type !== 'pointerdown' || (e as PointerEvent).pointerType !== 'touch') held.current = true
       stopTween()
     }
@@ -146,7 +171,7 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
   useEffect(() => {
     const el = scroll.el
     el.style.overflowY = blocked ? 'hidden' : 'auto'
-    el.style.touchAction = blocked ? 'none' : ''
+    el.style.touchAction = blocked ? 'pinch-zoom' : ''
     return () => {
       el.style.overflowY = 'auto'
       el.style.touchAction = ''
@@ -192,6 +217,10 @@ function CameraRig({ index, blocked }: { index: DataIndex; blocked: boolean }) {
     // URL и стор — только на остановке и не во время полёта к другой эре. Нативный скролл должен стоять на той же остановке:
     // при мгновенном твине (reduced-motion) камера ещё на старой, и без этой проверки стор откатывался бы к ней.
     if (!arriving.current && !settling.current && dist <= STOP_EPS * spacing && Math.abs(nativeT - stop.t) <= STOP_EPS * spacing && useStore.getState().eraId !== stop.id) setEra(stop.id)
+
+    // Позиция нити для перемонтирования (смена тира, возврат из «Списка»). Не пишем, пока камера не доехала до эры из URL: кадры на t=0 затёрли бы сохранённое.
+    // После блока URL/стор: эра в записи уже актуальная.
+    if (!arriving.current) setLastOffset(nativeT, useStore.getState().eraId)
   })
 
   useEffect(() => () => { settling.current?.kill(); if (settleTimer.current) clearTimeout(settleTimer.current) }, [])

@@ -58,7 +58,7 @@ export const DUST_VERT = /* glsl */ `
   void main() {
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = clamp(uSize * aScale * uPixelRatio * (uScale / -mvPosition.z), 1.0, 24.0 * uPixelRatio);
+    gl_PointSize = clamp(uSize * aScale * uPixelRatio * (uScale / -mvPosition.z), 1.0, 14.0 * uPixelRatio);
     vColor = aColor;
     vDepth = -mvPosition.z;
   }

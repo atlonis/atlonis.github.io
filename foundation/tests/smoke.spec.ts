@@ -58,8 +58,10 @@ test('3D: «Хроника» поднимает canvas, список пряче�
   page.on('pageerror', (e) => errors.push(e.message))
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()) })
 
-  await page.goto('/foundation/#/chronicle/mule')
+  await page.goto('/foundation/?debug#/chronicle/mule')
   await expect(page.locator('.stage canvas')).toHaveCount(1, { timeout: 20_000 })
+  // Есть WebGL-контекст, кадр отрисован и бюджет ≤ 31 draw call выдержан.
+  await expect(page.locator('#debug-stats')).toHaveText(/calls ([1-9]|[12]\d|3[01]) ·/, { timeout: 10_000 })
   await expect(page.locator('main')).toHaveCount(0)
   await expect(page.locator('.chip.active')).toHaveText('Мул')
   await page.locator('.chip', { hasText: 'Трантор' }).click()
@@ -75,4 +77,31 @@ test('3D: переключение в «Список» и обратно не л
   await expect(page.locator('section.era')).toHaveCount(6)
   await page.locator('nav.modes button', { hasText: 'Хроника' }).click()
   await expect(page.locator('.stage canvas')).toHaveCount(1, { timeout: 20_000 })
+})
+
+test('3D: смена эры по хэшу в первую секунду не теряется и не откатывается', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'сцена проверяется на десктопном проекте')
+  await page.goto('/foundation/?debug#/chronicle/trantor-trial')
+  await expect(page.locator('.stage canvas')).toHaveCount(1, { timeout: 20_000 })
+  await page.waitForTimeout(300)
+  await page.evaluate(() => { location.hash = '#/chronicle/mule/planet/kalgan' })
+  await expect(page).toHaveURL(/#\/chronicle\/mule\/planet\/kalgan$/, { timeout: 5_000 })
+  await page.waitForTimeout(2_000)
+  await expect(page).toHaveURL(/#\/chronicle\/mule\/planet\/kalgan$/)
+  await expect(page.locator('.chip.active')).toHaveText('Мул')
+})
+
+test('3D на телефоне: карточка блокирует скролл нити', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'блокировка скролла нити — только на телефоне')
+  await page.goto('/foundation/?debug#/chronicle/trantor-trial')
+  await expect(page.locator('.stage canvas')).toHaveCount(1, { timeout: 20_000 })
+  await expect(page.locator('#debug-stats')).toHaveText(/calls/, { timeout: 10_000 })
+  const thread = page.getByTestId('thread-scroll')
+  await expect(thread).toHaveCSS('overflow-y', 'auto')
+  await page.goto('/foundation/?debug#/chronicle/trantor-trial/planet/trantor')
+  await expect(page.locator('aside.card')).toBeVisible()
+  await expect(thread).toHaveCSS('overflow-y', 'hidden')
+  await page.locator('aside.card button.close').click()
+  await expect(page.locator('aside.card')).toHaveCount(0)
+  await expect(thread).toHaveCSS('overflow-y', 'auto')
 })

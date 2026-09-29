@@ -160,7 +160,7 @@ export function Planets({ index }: { index: DataIndex }) {
   // Курсор не залипает, если сцену размонтировали, пока мышь над планетой.
   useEffect(() => () => { document.body.style.cursor = '' }, [])
 
-  const onOver = (e: ThreeEvent<PointerEvent>) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; markAlive() }
+  const onOver = (e: ThreeEvent<PointerEvent>) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; markAlive(); invalidate() }
   const onOut = () => { document.body.style.cursor = '' }
   const onClick = (id: string) => (e: ThreeEvent<MouseEvent>) => { e.stopPropagation(); openEntity(index, id) }
 

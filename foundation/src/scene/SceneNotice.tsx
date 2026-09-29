@@ -8,7 +8,8 @@ export function SceneNotice() {
   const request3d = useStore((s) => s.request3d)
 
   if (gate === 'unavailable') return <p className="notice">3D недоступно на этом устройстве.</p>
-  if (scene3d === 'failed') return <p className="notice">3D-карта не загрузилась. <button type="button" onClick={request3d}>Повторить загрузку 3D</button></p>
+  // Провал import() модуля браузер кэширует на время жизни документа: повторный import() отвалится сразу. Состояние живёт в URL, перезагрузка ничего не теряет.
+  if (scene3d === 'failed') return <p className="notice">3D-карта не загрузилась. <button type="button" onClick={() => location.reload()}>Повторить загрузку 3D</button></p>
   if (scene3d === 'lost') return <p className="notice">Графический контекст потерян. <button type="button" onClick={request3d}>Перезапустить 3D</button></p>
   if (!want3d) {
     return (

@@ -36,3 +36,16 @@ export function markAlive(): void {
 export function isAlive(): boolean {
   return performance.now() - lastInputAt < ALIVE_MS
 }
+
+// Последняя позиция нити: нативный offset (0..1) и эра из URL в момент записи. Переживает перемонтирование Canvas
+// (смена тира) и уход в «Список». Модульная переменная — без ререндеров; запись — присваивание полей, без аллокаций.
+const lastPos = { valid: false, offset: 0, eraId: '' }
+export function setLastOffset(offset: number, eraId: string): void {
+  lastPos.valid = true
+  lastPos.offset = offset
+  lastPos.eraId = eraId
+}
+/** Сохранённая позиция или null. Если эра в URL с тех пор менялась вне сцены (чип или карточка в «Списке»), позиция устарела: URL важнее. */
+export function getLastOffset(eraId: string): number | null {
+  return lastPos.valid && lastPos.eraId === eraId ? lastPos.offset : null
+}

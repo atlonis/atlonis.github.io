@@ -8,6 +8,7 @@
 
 - Дизайн v1: [docs/superpowers/specs/2026-09-29-foundation-map-design.md](docs/superpowers/specs/2026-09-29-foundation-map-design.md)
 - План v0: [docs/superpowers/plans/2026-09-29-foundation-v0-list.md](docs/superpowers/plans/2026-09-29-foundation-v0-list.md)
+- План 3D-A: [docs/superpowers/plans/2026-09-29-foundation-3d-a-chronicle.md](docs/superpowers/plans/2026-09-29-foundation-3d-a-chronicle.md)
 - Разведка 3D-стека: [docs/research/2026-09-29-3d-stack-research.md](docs/research/2026-09-29-3d-stack-research.md)
 
 ## Команды
@@ -16,7 +17,7 @@
 npm ci
 npm run data      # content/*.yaml → public/data/foundation.json (падает на ошибках)
 npm run dev       # http://localhost:5173/foundation/
-npm test          # vitest: схема, проверки, роутер, сборка контента
+npm test          # vitest: схема, проверки, роутер, сборка контента, чистые модули сцены (gate, tier, galaxy, layout), стор
 npm run build     # тесты + данные + vite build + size-limit
 npm run e2e       # build + Playwright-смоук (один раз: npx playwright install chromium)
 ```
@@ -31,4 +32,4 @@ npm run e2e       # build + Playwright-смоук (один раз: npx playwrig
 
 ## Сцена
 
-Чанк `src/scene/SceneRoot.tsx` грузится динамически; оболочка не импортирует three. Чистые модули без three: `gate.ts` (можно ли 3D), `tier.ts` (тир устройства), `galaxy.ts` (точки по сиду), `layout.ts` (остановки эр, камера «Хроники»). Галактика рисуется компонентом `GalaxyLayer.tsx`. Каждый твин — через `tweenTo()` из `anim.ts`, он просит кадр (`frameloop="demand"`). Чипы эр зовут `scrollToEra` из `sceneStore`, который регистрирует `CameraRig`.
+Чанк `src/scene/SceneRoot.tsx` грузится динамически; оболочка не импортирует three. Чистые модули без three: `gate.ts` (можно ли 3D), `tier.ts` (тир устройства), `galaxy.ts` (точки по сиду), `layout.ts` (остановки эр, камера «Хроники»). Галактика рисуется компонентом `GalaxyLayer.tsx`. Каждый твин — через `tweenTo()` из `anim.ts`, он просит кадр (`frameloop="demand"`). Чипы эр зовут `scrollToEra` из `sceneStore`; регистрирует его `CameraRig`. Позиция нити (`setLastOffset` в `sceneStore`) переживает смену тира и возврат из «Списка», пока эра в URL не менялась.
