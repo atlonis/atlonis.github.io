@@ -10,3 +10,31 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--fg); }
 body { font: 16px/1.5 Inter, -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; }
+
+.status { padding: 48px 16px; text-align: center; color: var(--muted); }
+.status button, .modes button, .chip, .item { font: inherit; cursor: pointer; }
+
+.top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 16px 16px 8px; }
+.top h1 { font-size: 20px; margin: 0; letter-spacing: -0.01em; }
+
+.modes { display: flex; gap: 4px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.modes button { border: 0; background: transparent; color: var(--muted); border-radius: 999px; padding: 6px 12px; }
+.modes button.active { background: var(--line); color: var(--fg); }
+
+.eras { display: flex; gap: 8px; overflow-x: auto; padding: 8px 16px 12px; scrollbar-width: none; }
+.chip { flex: 0 0 auto; border: 1px solid var(--line); background: var(--bg-2); color: var(--fg); border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
+.chip.active { border-color: var(--era); box-shadow: inset 0 0 0 1px var(--era); }
+
+main { max-width: 880px; margin: 0 auto; padding: 0 16px 96px; }
+.notice { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; color: var(--muted); }
+
+.era { border-left: 3px solid var(--era); padding: 8px 0 8px 16px; margin: 24px 0 40px; }
+.era h2 { margin: 0; font-size: 22px; }
+.era .years { margin: 2px 0 8px; color: var(--era); font-size: 14px; }
+.era .muted { color: var(--muted); margin: 0 0 12px; }
+.group h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 16px 0 6px; }
+.group ul, .era > ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.item { display: block; width: 100%; text-align: left; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; color: var(--fg); }
+.item:hover { border-color: var(--era); }
+.item i { color: var(--muted); font-style: normal; }
+.item span { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
