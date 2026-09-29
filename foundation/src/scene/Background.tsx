@@ -23,6 +23,7 @@ export function Background({ tier }: { tier: Tier }) {
           uFadeFar: { value: 20_000 },
         },
         transparent: true,
+        premultipliedAlpha: true,
         depthWrite: false,
         depthTest: true,
         blending: THREE.AdditiveBlending,

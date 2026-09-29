@@ -31,6 +31,7 @@ export function Galaxy({ tier }: { tier: Tier }) {
           uFadeFar: { value: 700 },
         },
         transparent: true,
+        premultipliedAlpha: true,
         depthWrite: false,
         depthTest: true,
         blending: THREE.AdditiveBlending,

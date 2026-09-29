@@ -10,7 +10,7 @@ import { Dust } from './Dust'
 import { FrameMeter } from './FrameMeter'
 import { Galaxy } from './GalaxyLayer'
 import { setPaletteNow } from './palette'
-import { useSceneStore } from './sceneStore'
+import { markAlive, useSceneStore } from './sceneStore'
 import { TIER_PARAMS, detectTier, readTierEnv } from './tier'
 
 class GLErrorBoundary extends Component<{ onError: () => void; children: ReactNode }, { failed: boolean }> {
@@ -23,13 +23,16 @@ class GLErrorBoundary extends Component<{ onError: () => void; children: ReactNo
 /** Один раз до первого рендера сцены: тир, reduced-motion, активная эра и стартовая палитра из URL. Идемпотентно (StrictMode зовёт дважды). */
 function initSceneState(index: DataIndex): void {
   const eraId = useStore.getState().eraId
+  const scene = useSceneStore.getState()
   useSceneStore.setState({
-    tier: detectTier(readTierEnv()),
+    // После замера FrameMeter тир зафиксирован: повторный вход в 3D не сбрасывает понижение.
+    tier: scene.tierLocked ? scene.tier : detectTier(readTierEnv()),
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     activeEraId: eraId,
   })
   const era = index.eras.find((e) => e.id === eraId) ?? index.eras[0]
   setPaletteNow(era.palette.primary, era.palette.glow)
+  markAlive()
 }
 
 export default function SceneRoot({ index }: { index: DataIndex }) {
