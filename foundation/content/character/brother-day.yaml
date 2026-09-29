@@ -1,0 +1,19 @@
+id: brother-day
+kind: character
+name: { ru: "Брат День", en: "Brother Day" }
+originalName: Brother Day
+summary: { ru: "Правящий клон Клеона в расцвете лет. Титул, который носят разные Клеоны." }
+eras: [trantor-trial, terminus-crisis, traders-general, mule]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }] }
+faction: empire
+homeworld: trantor
+actor: Ли Пейс
+timeline:
+  - { era: trantor-trial, note: { ru: "Клеон XII." }, status: alive, planet: trantor }
+  - { era: terminus-crisis, note: { ru: "Клеон XIII." }, status: alive, planet: trantor }
+  - { era: traders-general, note: { ru: "Клеон XVII, помолвка с Сарет." }, status: alive, planet: trantor }
+  - { era: mule, note: { ru: "Клеон XXIV." }, status: alive, planet: trantor }
+book: { presence: show-only, diff: { ru: "В трилогии генетической династии нет. Ближайшая роль — Клеон II в части «Генерал»." } }
+related:
+  - { id: demerzel, role: { ru: "воспитана ею" } }
+  - { id: empire, role: { ru: "правит" } }

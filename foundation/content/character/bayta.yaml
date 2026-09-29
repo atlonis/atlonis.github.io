@@ -1,0 +1,15 @@
+id: bayta
+kind: character
+name: { ru: "Байта", en: "Bayta" }
+originalName: Bayta
+summary: { ru: "Женщина из Основания, чья история пересекается с Мулом." }
+eras: [mule]
+appearsIn: { show: [{ season: 3 }], book: [mule] }
+faction: foundation
+book:
+  presence: different
+  name: { ru: "Байта Дарелл", en: "Bayta Darell" }
+  originalName: Bayta Darell
+  diff: { ru: "В книге Байта Дарелл вместе с мужем Тораном увозит с Калгана шута Магнифико и первой понимает, кто такой Мул. Фамилия и родство в сериале другие — уточняется." }
+related:
+  - { id: kalgan, role: { ru: "встреча с Мулом" } }

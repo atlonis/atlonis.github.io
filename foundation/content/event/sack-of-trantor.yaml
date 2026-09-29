@@ -1,0 +1,10 @@
+id: sack-of-trantor
+kind: event
+name: { ru: "Великое разграбление Трантора" }
+summary: { ru: "Трантор разорён, Империя фактически кончается." }
+eras: [mule]
+appearsIn: { book: [mule] }
+book: { presence: book-only }
+year: 260
+planet: trantor
+body: { ru: "В книге упоминается как событие, случившееся за десятилетия до Мула. Точная датировка уточняется в контент-фазе." }

@@ -1,0 +1,18 @@
+id: gaal-dornick
+kind: character
+name: { ru: "Гаал Дорник", en: "Gaal Dornick" }
+originalName: Gaal Dornick
+summary: { ru: "Математик с Синнакса, ученица Селдона, в сериале — сквозная героиня." }
+eras: [trantor-trial, traders-general, mule]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }], book: [psychohistorians] }
+faction: second-foundation
+homeworld: synnax
+actor: Лу Ллобелл
+timeline:
+  - { era: trantor-trial, note: { ru: "Прилетает на Трантор, свидетель суда." }, status: alive, planet: trantor, faction: foundation }
+  - { era: traders-general, note: { ru: "После криосна встречает дочь Салвор; вместе с Хари создаёт Второе Основание." }, status: alive, faction: second-foundation }
+  - { era: mule, note: { ru: "Возглавляет Второе Основание против Мула." }, status: alive, faction: second-foundation }
+book: { presence: different, diff: { ru: "В книге Гаал — мужчина и рассказчик только первой части «Психоисторики». Дальше не появляется." } }
+related:
+  - { id: hari-seldon, role: { ru: "учитель" } }
+  - { id: synnax, role: { ru: "родной мир" } }

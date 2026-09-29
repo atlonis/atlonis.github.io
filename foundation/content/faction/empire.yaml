@@ -1,0 +1,8 @@
+id: empire
+kind: faction
+name: { ru: "Галактическая Империя", en: "Galactic Empire" }
+summary: { ru: "Двенадцать тысяч лет власти над галактикой, которые кончаются." }
+eras: [trantor-trial, terminus-crisis, traders-general, mule]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }], book: [psychohistorians, general] }
+book: { presence: different, diff: { ru: "В книге нет генетической династии: императоры — обычные люди, Клеон II появляется в «Генерале»." } }
+color: "#d4a53a"

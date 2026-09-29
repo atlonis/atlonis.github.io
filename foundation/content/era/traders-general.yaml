@@ -1,0 +1,8 @@
+id: traders-general
+kind: era
+name: { ru: "Торговцы, генерал, второй кризис" }
+summary: { ru: "Основание богатеет торговлей, Империя посылает генерала, рождается Второе Основание сериала." }
+order: 3
+years: { start: 101, end: 250, bookStart: 135, bookEnd: 195, label: { ru: "~173 Э.О. в сериале · 135–195 Э.О. в книге" } }
+palette: { primary: "#3fb7c9", glow: "#a5eef8" }
+appearsIn: { show: [{ season: 2 }], book: [traders, merchant-princes, general] }

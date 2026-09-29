@@ -1,0 +1,17 @@
+id: salvor-hardin
+kind: character
+name: { ru: "Салвор Хардин", en: "Salvor Hardin" }
+originalName: Salvor Hardin
+summary: { ru: "Смотритель Терминуса, дочь Гаал и Рейча." }
+eras: [terminus-crisis, traders-general]
+appearsIn: { show: [{ season: 1 }, { season: 2 }], book: [encyclopedists, mayors] }
+faction: foundation
+homeworld: terminus
+actor: Лия Харви
+timeline:
+  - { era: terminus-crisis, note: { ru: "Смотритель Терминуса во время анакреонского кризиса." }, status: alive, planet: terminus }
+  - { era: traders-general, note: { ru: "Находит мать, Гаал, и погибает, защищая её." }, status: dead }
+book: { presence: different, diff: { ru: "В книге Сальвор Хардин — мужчина, первый мэр Терминуса, автор фразы «Насилие — последнее прибежище некомпетентности». Родства с Гаал нет." } }
+related:
+  - { id: gaal-dornick, role: { ru: "мать" } }
+  - { id: terminus, role: { ru: "родной мир" } }

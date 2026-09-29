@@ -1,0 +1,19 @@
+id: hari-seldon
+kind: character
+name: { ru: "Хари Селдон", en: "Hari Seldon" }
+originalName: Hari Seldon
+summary: { ru: "Математик, создатель психоистории и Плана." }
+eras: [trantor-trial, terminus-crisis, traders-general, mule]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }], book: [psychohistorians, encyclopedists, mayors, mule] }
+faction: foundation
+homeworld: trantor
+actor: Джаред Харрис
+timeline:
+  - { era: trantor-trial, note: { ru: "Человек. Суд на Транторе, ссылка на Терминус." }, status: alive, planet: trantor }
+  - { era: terminus-crisis, note: { ru: "Цифровая копия в Хранилище на Терминусе." }, status: digital, planet: terminus }
+  - { era: traders-general, note: { ru: "Две копии: одна в Хранилище, другая рядом с Гаал." }, status: digital }
+book: { presence: different, diff: { ru: "В книге Селдон после смерти появляется только записями в Склепе Времени во время кризисов. Никаких живых цифровых копий." } }
+related:
+  - { id: trantor, role: { ru: "родной мир" } }
+  - { id: foundation, role: { ru: "основал" } }
+body: { ru: "Хари Селдон доказал математически, что Империя падёт, и придумал, как сократить тьму после неё.\n\nВ сериале он остаётся действующим лицом на протяжении всех сезонов — как цифровая копия." }

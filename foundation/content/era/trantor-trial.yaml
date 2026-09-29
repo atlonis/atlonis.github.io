@@ -1,0 +1,9 @@
+id: trantor-trial
+kind: era
+name: { ru: "Трантор: суд и ссылка", en: "Trantor: the trial" }
+summary: { ru: "Селдон предсказывает падение Империи, суд отправляет его и Основание на Терминус." }
+order: 1
+years: { start: 0, end: 5, bookStart: 0, bookEnd: 2, label: { ru: "0 Э.О. · 12 067 И.Э." } }
+palette: { primary: "#d4a53a", glow: "#ffe08a" }
+appearsIn: { show: [{ season: 1 }], book: [psychohistorians] }
+sources: ["https://ru.wikipedia.org/wiki/Основание_(телесериал)"]

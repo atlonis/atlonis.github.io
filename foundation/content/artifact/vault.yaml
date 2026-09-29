@@ -1,0 +1,11 @@
+id: vault
+kind: artifact
+name: { ru: "Хранилище", en: "The Vault" }
+originalName: The Vault
+summary: { ru: "Объект на Терминусе, где живёт цифровой Селдон." }
+eras: [terminus-crisis, traders-general, mule]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }], book: [encyclopedists, mayors, mule] }
+book: { presence: different, name: { ru: "Склеп Времени", en: "Time Vault" }, originalName: Time Vault, diff: { ru: "В книге — зал с голограммами Селдона, которые включаются в моменты кризисов. Ничего живого внутри нет." } }
+planet: terminus
+related:
+  - { id: hari-seldon, role: { ru: "обитатель" } }

@@ -1,0 +1,10 @@
+id: anacreon
+kind: planet
+name: { ru: "Анакреон", en: "Anacreon" }
+originalName: Anacreon
+summary: { ru: "Королевство на Периферии, первый противник Терминуса." }
+eras: [terminus-crisis]
+appearsIn: { show: [{ season: 1 }], book: [encyclopedists, mayors] }
+book: { presence: same }
+galaxy: { arm: 1, r: 0.85, offset: 0.25 }
+look: { type: desert, colorA: "#c9a36b", colorB: "#6b4b23", radius: 1.8 }

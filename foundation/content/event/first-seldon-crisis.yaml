@@ -1,0 +1,14 @@
+id: first-seldon-crisis
+kind: event
+name: { ru: "Первый кризис Селдона" }
+summary: { ru: "Анакреон давит на Терминус; Хранилище открывается впервые." }
+eras: [terminus-crisis]
+appearsIn: { show: [{ season: 1 }], book: [encyclopedists] }
+book: { presence: different, diff: { ru: "В книге кризис случается в 50 Э.О. и решается политикой Хардина, без «Инвиктуса»." } }
+year: 35
+yearBook: 50
+planet: terminus
+isSeldonCrisis: true
+related:
+  - { id: salvor-hardin, role: { ru: "смотритель Терминуса" } }
+  - { id: anacreon, role: { ru: "противник" } }

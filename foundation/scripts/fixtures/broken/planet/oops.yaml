@@ -1,0 +1,7 @@
+id: oops
+kind: planet
+name: { ru: "Упс" }
+summary: { ru: "Битая планета" }
+eras: [nope]
+galaxy: { arm: 0, r: 0.5, offset: 0 }
+look: { type: city, colorA: "red", colorB: "#ffffff", radius: 1 }

@@ -1,0 +1,8 @@
+id: second-foundation
+kind: faction
+name: { ru: "Второе Основание", en: "Second Foundation" }
+summary: { ru: "Тайные хранители Плана, менталики." }
+eras: [traders-general, mule, second-foundation-search]
+appearsIn: { show: [{ season: 2 }, { season: 3 }], book: [search-by-mule, search-by-foundation] }
+book: { presence: different, diff: { ru: "В книге Второе Основание создано Селдоном вместе с Первым и с самого начала живёт на Транторе; в сериале его создают Гаал и Хари на Игнисе." } }
+color: "#8a5cff"

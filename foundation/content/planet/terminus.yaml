@@ -1,0 +1,10 @@
+id: terminus
+kind: planet
+name: { ru: "Терминус", en: "Terminus" }
+originalName: Terminus
+summary: { ru: "Бедный мир на краю галактики, дом Основания." }
+eras: [terminus-crisis, traders-general, mule, second-foundation-search]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }], book: [encyclopedists, mayors, traders, merchant-princes, mule] }
+book: { presence: same }
+galaxy: { arm: 1, r: 0.95, offset: 0 }
+look: { type: barren, colorA: "#7fa3c7", colorB: "#2e4a6b", radius: 1.5 }

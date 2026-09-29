@@ -1,0 +1,12 @@
+id: seldon-trial
+kind: event
+name: { ru: "Суд над Селдоном" }
+summary: { ru: "Империя судит Селдона за предсказание своего падения и ссылает Основание на Терминус." }
+eras: [trantor-trial]
+appearsIn: { show: [{ season: 1, episodes: [1, 2] }], book: [psychohistorians] }
+book: { presence: same }
+year: 0
+planet: trantor
+related:
+  - { id: hari-seldon, role: { ru: "обвиняемый" } }
+  - { id: gaal-dornick, role: { ru: "свидетель" } }

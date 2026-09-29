@@ -1,0 +1,13 @@
+id: demerzel
+kind: character
+name: { ru: "Демерзель", en: "Demerzel" }
+originalName: Demerzel
+summary: { ru: "Робот, хранительница генетической династии." }
+eras: [trantor-trial, terminus-crisis, traders-general, mule]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }] }
+faction: empire
+homeworld: trantor
+actor: Лора Бирн
+book: { presence: show-only, diff: { ru: "В трилогии нет; у Азимова есть в «Прелюдии к Основанию» как Это Демерзель, он же робот Р. Дэниел Оливо." } }
+related:
+  - { id: empire, role: { ru: "служит" } }

@@ -1,0 +1,10 @@
+id: kalgan
+kind: planet
+name: { ru: "Калган", en: "Kalgan" }
+originalName: Kalgan
+summary: { ru: "Мир развлечений, ставший столицей Мула." }
+eras: [mule, second-foundation-search]
+appearsIn: { show: [{ season: 3 }], book: [mule, search-by-mule, search-by-foundation] }
+book: { presence: same }
+galaxy: { arm: 3, r: 0.6, offset: -0.15 }
+look: { type: ocean, colorA: "#58c8b0", colorB: "#1d5e52", radius: 2 }

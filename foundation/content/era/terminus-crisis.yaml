@@ -1,0 +1,8 @@
+id: terminus-crisis
+kind: era
+name: { ru: "Терминус: Хардин и Анакреон" }
+summary: { ru: "Первое поколение на Терминусе и первый кризис Селдона." }
+order: 2
+years: { start: 6, end: 100, bookStart: 50, bookEnd: 80, label: { ru: "~35 Э.О. в сериале · 50–80 Э.О. в книге" } }
+palette: { primary: "#4a7cff", glow: "#9cc0ff" }
+appearsIn: { show: [{ season: 1 }], book: [encyclopedists, mayors] }

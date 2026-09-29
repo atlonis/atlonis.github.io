@@ -1,0 +1,10 @@
+id: synnax
+kind: planet
+name: { ru: "Синнакс", en: "Synnax" }
+originalName: Synnax
+summary: { ru: "Водный мир, родина Гаал Дорник." }
+eras: [trantor-trial, traders-general]
+appearsIn: { show: [{ season: 1 }, { season: 2 }] }
+book: { presence: show-only, diff: { ru: "В книге Гаал родом с Синнакса, но сама планета не показана." } }
+galaxy: { arm: 2, r: 0.7, offset: 0.1 }
+look: { type: ocean, colorA: "#2f7fd6", colorB: "#0b3a6e", radius: 1.6 }

@@ -1,0 +1,8 @@
+id: second-foundation-search
+kind: era
+name: { ru: "Поиски Второго Основания" }
+summary: { ru: "Первое Основание ищет Второе; только книга." }
+order: 5
+years: { start: 351, end: 420, bookStart: 376, bookEnd: 377, label: { ru: "376 Э.О., только книга" } }
+palette: { primary: "#8a5cff", glow: "#cbb5ff" }
+appearsIn: { book: [search-by-foundation] }

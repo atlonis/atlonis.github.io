@@ -1,0 +1,12 @@
+id: genetic-dynasty
+kind: difference
+name: { ru: "Генетическая династия Клеонов" }
+summary: { ru: "Три клона одного императора — День, Закат и Рассвет — изобретение сериала." }
+eras: [trantor-trial, terminus-crisis, traders-general, mule]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }] }
+book: { presence: show-only }
+body: { ru: "В трилогии Азимова Империей правят обычные императоры, и линия Трантора почти не показана. Сериал придумал династию клонов, чтобы у Империи было лицо на протяжении столетий." }
+related:
+  - { id: brother-day, role: { ru: "титул династии" } }
+  - { id: demerzel, role: { ru: "хранительница" } }
+  - { id: empire, role: { ru: "фракция" } }

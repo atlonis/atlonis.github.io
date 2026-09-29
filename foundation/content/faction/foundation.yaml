@@ -1,0 +1,8 @@
+id: foundation
+kind: faction
+name: { ru: "Основание", en: "The Foundation" }
+summary: { ru: "Колония на Терминусе, которая должна сократить тёмные века с тридцати тысяч лет до одной тысячи." }
+eras: [terminus-crisis, traders-general, mule, second-foundation-search]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }], book: [encyclopedists, mayors, traders, merchant-princes, general, mule, search-by-mule, search-by-foundation] }
+book: { presence: same }
+color: "#4a7cff"

@@ -1,0 +1,10 @@
+id: trantor
+kind: planet
+name: { ru: "Трантор", en: "Trantor" }
+originalName: Trantor
+summary: { ru: "Столица Империи, планета-город." }
+eras: [trantor-trial, terminus-crisis, traders-general, mule, second-foundation-search]
+appearsIn: { show: [{ season: 1 }, { season: 2 }, { season: 3 }], book: [psychohistorians, general, search-by-foundation] }
+book: { presence: same }
+galaxy: { arm: 0, r: 0.02, offset: 0 }
+look: { type: city, colorA: "#f0c060", colorB: "#8a5a20", radius: 3 }

@@ -1,0 +1,8 @@
+id: mule
+kind: era
+name: { ru: "Мул" }
+summary: { ru: "Мутант, которого План не предвидел, ломает Основание." }
+order: 4
+years: { start: 251, end: 350, bookStart: 300, bookEnd: 316, label: { ru: "~325 Э.О. в сериале · 300–316 Э.О. в книге" } }
+palette: { primary: "#d9463b", glow: "#ff9b93" }
+appearsIn: { show: [{ season: 3 }], book: [mule, search-by-mule] }
