@@ -21,6 +21,13 @@ describe('shouldDowngrade', () => {
   it('меньше окна — не решаем', () => expect(shouldDowngrade([30, 30, 30], 60)).toBe(false))
   it('средний кадр 25 мс на первых 60 — понижаем', () => expect(shouldDowngrade(Array(60).fill(25), 60, 20)).toBe(true))
   it('средний кадр 12 мс — не понижаем', () => expect(shouldDowngrade(Array(60).fill(12), 60, 20)).toBe(false))
+  it('смотрит на первые кадры окна, а не на последние', () => {
+    const slowThenFast = [...Array(60).fill(30), ...Array(60).fill(5)]
+    const fastThenSlow = [...Array(60).fill(5), ...Array(60).fill(30)]
+    expect(shouldDowngrade(slowThenFast, 60, 20)).toBe(true)
+    expect(shouldDowngrade(fastThenSlow, 60, 20)).toBe(false)
+  })
+  it('ровно порог — не понижаем', () => expect(shouldDowngrade(Array(60).fill(20), 60, 20)).toBe(false))
 })
 
 describe('TIER_PARAMS', () => {

@@ -41,7 +41,6 @@ export function shouldDowngrade(frameMs: number[], window = 60, thresholdMs = 20
 
 export function readTierEnv(): TierEnv {
   const coarse = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches
-  const touchPoints = typeof navigator !== 'undefined' ? navigator.maxTouchPoints ?? 0 : 0
-  const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
-  return { coarse, touchPoints, deviceMemory }
+  const nav = typeof navigator !== 'undefined' ? (navigator as Navigator & { deviceMemory?: number }) : undefined
+  return { coarse, touchPoints: nav?.maxTouchPoints ?? 0, deviceMemory: nav?.deviceMemory }
 }
