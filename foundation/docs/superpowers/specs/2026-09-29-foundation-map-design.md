@@ -199,7 +199,7 @@ foundation/
     data/   schema.ts (zod + типы), load.ts, derive.ts (чистая математика: xyz, спираль)
     state/  store.ts (zustand: mode, eraId, selectedId, tier)
     router/ hash.ts
-    scene/  Scene.tsx, Galaxy.tsx, Dust.tsx, Planets.tsx, CharacterMarkers.tsx, Thread.tsx,
+    scene/  Scene.tsx, GalaxyLayer.tsx, Dust.tsx, Planets.tsx, CharacterMarkers.tsx, Thread.tsx,
             CameraRig.tsx, Labels.tsx, palette.ts
     ui/     EntityCard.tsx, EraNav.tsx, ModeToggle.tsx, SpoilerBanner.tsx,
             ListView.tsx, Loading.tsx
@@ -237,7 +237,7 @@ foundation/
 - Карта → Хроника: сохранить `getPosition()/getTarget()` в стор, размонтировать `CameraControls`; `CameraRig` 1.2 с лерпит от сохранённой позы к `helix(t(era))` через `gsap.to(progress, …, onUpdate: invalidate)`, по завершении ставит `scroll.el.scrollTop` на эру и отдаёт управление скроллу.
 - Клик по планете в «Карте» — `setLookAt(view планеты, true)` со `smoothTime 1.2`. На телефоне дополнительно `setFocalOffset`, чтобы планета встала в верхнюю треть над карточкой.
 
-**Активная эра и остановки «Хроники».** `ScrollControls` не снапит, поэтому: активная эра = эра ближайшей остановки по `t` с гистерезисом 0.1 витка. Скролл свободный; через 150 мс без scroll-событий, если |t − t_эры| < 0.3 витка, `scroll.offset` дотягивается к остановке GSAP-твином 0.4 с (твиним offset, не камеру). Клик по чипу EraNav и заход по URL — тот же твин offset за 0.8 с. Палитра и гашение планет переключаются по активной эре сразу, URL (`eraId`) обновляется только на остановке. Маркеры персонажей и подпись эры появляются при |t − t_эры| < 0.15 витка. Наклон камеры к диску — `smoothstep` по расстоянию до ближайшей остановки.
+**Активная эра и остановки «Хроники».** Единица «виток» ниже — шаг между остановками `spacing = 1/(N−1)`. `ScrollControls` не снапит, поэтому: активная эра = эра ближайшей остановки по `t` с гистерезисом 0.1 витка. Скролл свободный; через 150 мс без scroll-событий, если |t − t_эры| < 0.3 витка, `scroll.offset` дотягивается к остановке GSAP-твином 0.4 с (твиним offset, не камеру). Клик по чипу EraNav и заход по URL — тот же твин offset за 0.8 с. Палитра и гашение планет переключаются по активной эре сразу, URL (`eraId`) обновляется только на остановке. Маркеры персонажей и подпись эры появляются при |t − t_эры| < 0.15 витка. Наклон камеры к диску — `smoothstep` по расстоянию до ближайшей остановки.
 
 **Палитра.** Uniform `uEraColor` и `uEraGlow` в шейдерах галактики и нити, GSAP-твин к цвету активной эры за 0.8 с.
 
@@ -252,7 +252,7 @@ foundation/
 | `show-only` | «Сериал» (`body`), «Связи»; бейдж «В книге нет» |
 | `book-only` | «В книге» (`body`), «Связи»; бейдж «В сериале нет» |
 
-Жесты: тело карточки — `overscroll-behavior: contain; touch-action: pan-y`; на телефоне при открытой карточке `<ScrollControls enabled={false}>`, чтобы жест мимо карточки не двигал нить; свайп вниз закрывает карточку, только если её контент проскроллен в начало.
+Жесты: тело карточки — `overscroll-behavior: contain; touch-action: pan-y`; на телефоне при открытой карточке скролл-элемент нити получает `overflow-y: hidden` и `touch-action: none` (`ScrollControls` остаётся включённым, чтобы программные перелёты работали), чтобы жест мимо карточки не двигал нить; свайп вниз закрывает карточку, только если её контент проскроллен в начало.
 
 **Hover-лейбл** — единственный HTML-якорь в 3D: имя + `summary` над объектом под курсором на десктопе, drei `<Html>` без `occlude`. На телефоне hover-лейбла нет.
 
@@ -275,7 +275,7 @@ foundation/
 
 **Правила render-on-demand.**
 1. Сами инвалидируют (по исходникам drei 10.7): `ScrollControls`, `CameraControls`, `Text`; изменение React-пропсов объектов сцены инвалидирует R3F сам.
-2. Всё остальное анимируется через GSAP: при монтировании сцены `gsap.ticker.add(invalidate)`, при размонтировании — `remove`. Тикер GSAP спит без активных твинов, в покое кадров нет. Лерпы uniform — `gsap.to(uniform.value, …)`, не ручной lerp в `useFrame`.
+2. Всё остальное анимируется через GSAP-твины, каждый с `invalidate()` в `onUpdate` (обёртка `tweenTo`). Глобальный `gsap.ticker.add(invalidate)` не используем: тикер GSAP держит свой rAF, пока есть слушатели, и кадры шли бы постоянно. Лерпы uniform — `gsap.to` по месту на общем `THREE.Color`, не ручной lerp в `useFrame`.
 3. `uTime` галактики: `useFrame((_, delta) => { uTime.value += Math.min(delta, 1/30) })` — R3F не клампит delta, после простоя первый кадр приносит секунды. Вращение живёт только в отрисованных кадрах.
 4. Пауза на `document.hidden`. Все анимации через delta-time: при 30 fps в режиме энергосбережения ничего не ломается.
 

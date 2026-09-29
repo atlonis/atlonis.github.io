@@ -1,14 +1,21 @@
 import { expect, test } from '@playwright/test'
 
-test('главная уходит на первую эру и рендерит список', async ({ page }) => {
+test('главная: без 3D (?no3d) — список и пометка', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()) })
 
-  await page.goto('/foundation/')
-  await expect(page).toHaveURL(/#\/chronicle\/trantor-trial$/)
+  await page.goto('/foundation/?no3d')
+  await expect(page).toHaveURL(/\?no3d#\/chronicle\/trantor-trial$/)
   await expect(page.locator('section.era')).toHaveCount(6) // 5 эр + «Чем отличается»
+  await expect(page.locator('.notice')).toContainText('3D недоступно')
+  await expect(page.locator('nav.modes')).toHaveCount(0)
   expect(errors).toEqual([])
+})
+
+test('главная в «Списке» рендерит все эры', async ({ page }) => {
+  await page.goto('/foundation/#/list/trantor-trial')
+  await expect(page.locator('section.era')).toHaveCount(6)
 })
 
 test('карточка открывается кликом и закрывается кнопкой «Назад»', async ({ page }) => {
@@ -43,4 +50,29 @@ test('исправленный deep link не оставляет мёртвой 
   await expect(page).toHaveURL(/#\/list\/mule\/character\/bayta$/)
   await page.goBack()
   await expect(page).toHaveURL(/#\/list\/trantor-trial$/)
+})
+
+test('3D: «Хроника» поднимает canvas, список прячется, ошибок нет', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'сцена проверяется на десктопном проекте')
+  const errors: string[] = []
+  page.on('pageerror', (e) => errors.push(e.message))
+  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()) })
+
+  await page.goto('/foundation/#/chronicle/mule')
+  await expect(page.locator('.stage canvas')).toHaveCount(1, { timeout: 20_000 })
+  await expect(page.locator('main')).toHaveCount(0)
+  await expect(page.locator('.chip.active')).toHaveText('Мул')
+  await page.locator('.chip', { hasText: 'Трантор' }).click()
+  await expect(page).toHaveURL(/#\/chronicle\/trantor-trial$/, { timeout: 5_000 })
+  expect(errors).toEqual([])
+})
+
+test('3D: переключение в «Список» и обратно не ломает сцену', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'сцена проверяется на десктопном проекте')
+  await page.goto('/foundation/#/chronicle/trantor-trial')
+  await expect(page.locator('.stage canvas')).toHaveCount(1, { timeout: 20_000 })
+  await page.locator('nav.modes button', { hasText: 'Список' }).click()
+  await expect(page.locator('section.era')).toHaveCount(6)
+  await page.locator('nav.modes button', { hasText: 'Хроника' }).click()
+  await expect(page.locator('.stage canvas')).toHaveCount(1, { timeout: 20_000 })
 })
