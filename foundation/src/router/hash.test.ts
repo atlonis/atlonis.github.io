@@ -36,6 +36,7 @@ describe('resolveHash', () => {
   it('пустой хэш — первая эра, «Хроника», без уведомления', () => {
     expect(resolveHash('', index)).toEqual({ route: { mode: 'chronicle', eraId: 'e1' } })
     expect(resolveHash('#/', index)).toEqual({ route: { mode: 'chronicle', eraId: 'e1' } })
+    expect(resolveHash('#', index)).toEqual({ route: { mode: 'chronicle', eraId: 'e1' } })
   })
   it('мусорный хэш — дефолт и уведомление', () => {
     expect(resolveHash('#/nope', index)).toEqual({ route: { mode: 'chronicle', eraId: 'e1' }, notice: NOT_FOUND })
@@ -51,5 +52,8 @@ describe('resolveHash', () => {
   })
   it('всё существует — как есть', () => {
     expect(resolveHash('#/map/e2/character/c', index)).toEqual({ route: { mode: 'map', eraId: 'e2', kind: 'character', id: 'c' } })
+  })
+  it('сущность существует, но вид в URL другой — карточки нет, уведомление', () => {
+    expect(resolveHash('#/list/e2/faction/c', index)).toEqual({ route: { mode: 'list', eraId: 'e2' }, notice: NOT_FOUND })
   })
 })
