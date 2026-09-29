@@ -9,4 +9,8 @@ describe('decide3D', () => {
   it('?no3d — недоступно даже с WebGL2', () => expect(decide3D({ ...ok, forceOff: true })).toBe('unavailable'))
   it('reduced-motion — только по кнопке', () => expect(decide3D({ ...ok, reducedMotion: true })).toBe('button'))
   it('saveData — только по кнопке', () => expect(decide3D({ ...ok, saveData: true })).toBe('button'))
+  it('unavailable важнее button', () => {
+    expect(decide3D({ ...ok, webgl2: false, reducedMotion: true })).toBe('unavailable')
+    expect(decide3D({ ...ok, forceOff: true, saveData: true })).toBe('unavailable')
+  })
 })

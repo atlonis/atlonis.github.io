@@ -18,10 +18,8 @@ export function readGateEnv(): GateEnv {
   let webgl2 = false
   try {
     const gl = document.createElement('canvas').getContext('webgl2')
-    if (gl) {
-      webgl2 = true
-      gl.getExtension('WEBGL_lose_context')?.loseContext()
-    }
+    webgl2 = gl !== null
+    try { gl?.getExtension('WEBGL_lose_context')?.loseContext() } catch { /* освобождение не влияет на ответ */ }
   } catch {
     webgl2 = false
   }
