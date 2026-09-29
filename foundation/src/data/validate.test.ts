@@ -82,4 +82,7 @@ describe('validateDataset', () => {
   it('эра с years.start > years.end', () => {
     expect(validateDataset([era('e1', 1, 10, 0)])).toContainEqual(expect.stringContaining('years.start больше years.end'))
   })
+  it('нет ни одной эры', () => {
+    expect(validateDataset([])).toContainEqual(expect.stringContaining('нет ни одной эры'))
+  })
 })

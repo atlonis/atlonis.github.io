@@ -1,3 +1,7 @@
+/** Виды сущностей. Живёт здесь (не в schema.ts), чтобы оболочка могла использовать их без импорта zod. */
+export const KINDS = ['era', 'planet', 'character', 'faction', 'event', 'artifact', 'difference'] as const
+export type Kind = (typeof KINDS)[number]
+
 /** Год 0 Э.О. = суд над Селдоном = 12 067 Имперской эры сериала. */
 export const FE_ZERO_IE = 12067
 /** Сколько сезонов сериала вышло. Баннер и валидация читают отсюда. */

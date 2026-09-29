@@ -1,8 +1,7 @@
 import { z } from 'zod'
 import { BOOK_PARTS, SEASONS } from './derive'
 
-export const KINDS = ['era', 'planet', 'character', 'faction', 'event', 'artifact', 'difference'] as const
-export type Kind = (typeof KINDS)[number]
+export { KINDS, type Kind } from './derive'
 
 const Id = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'id: только kebab-case')
 const Hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'цвет: #rrggbb')

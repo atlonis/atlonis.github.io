@@ -17,6 +17,7 @@ export function validateDataset(entities: Entity[]): string[] {
   }
 
   const eras = entities.filter((e): e is Era => e.kind === 'era').sort((a, b) => a.order - b.order)
+  if (eras.length === 0) errors.push('нет ни одной эры')
   eras.forEach((era, i) => {
     if (era.order !== i + 1) errors.push(`${era.id}: order должен быть ${i + 1}, а не ${era.order}`)
     if (era.years.start > era.years.end) errors.push(`${era.id}: years.start больше years.end`)

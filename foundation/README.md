@@ -21,7 +21,7 @@ npm run e2e       # build + Playwright-смоук (один раз: npx playwrig
 
 ## Контент
 
-Одна сущность — один файл `content/<kind>/<id>.yaml`, имя файла = `id`. Виды: `era`, `planet`, `character`, `faction`, `event`, `artifact`, `difference`. Схема — `src/data/schema.ts`, перекрёстные проверки — `src/data/validate.ts`. Блок `book` обязателен у всех, кроме эр. Годы — Э.О., 0 = суд над Селдоном.
+Одна сущность — один файл `content/<kind>/<id>.yaml`, имя файла = `id`. Виды: `era`, `planet`, `character`, `faction`, `event`, `artifact`, `difference`. Схема — `src/data/schema.ts`, перекрёстные проверки — `src/data/validate.ts`. Блок `book` обязателен у всех, кроме эр. Годы — Э.О., 0 = суд над Селдоном. `body` пока plain text: абзацы разделяются пустой строкой, markdown-разметка не рендерится.
 
 ## Маршруты
 

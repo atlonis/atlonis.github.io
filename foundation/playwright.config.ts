@@ -7,6 +7,6 @@ export default defineConfig({
   webServer: {
     command: 'npm run preview -- --port 4173 --strictPort',
     url: 'http://localhost:4173/foundation/',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
   },
 })

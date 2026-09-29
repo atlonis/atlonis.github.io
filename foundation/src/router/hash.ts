@@ -1,5 +1,5 @@
 import type { DataIndex } from '../data/indexDataset'
-import { KINDS, type Kind } from '../data/schema'
+import { KINDS, type Kind } from '../data/derive'
 
 export const MODES = ['chronicle', 'map', 'list'] as const
 export type Mode = (typeof MODES)[number]

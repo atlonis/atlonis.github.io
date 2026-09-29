@@ -1,5 +1,5 @@
-import { bookOf, type BookPart } from './derive'
-import type { Kind } from './schema'
+import { bookOf, feToIe, type BookPart } from './derive'
+import type { Event, Kind } from './schema'
 
 export const BOOK_PART_TITLES: Record<BookPart, string> = {
   'psychohistorians': 'Психоисторики',
@@ -25,3 +25,11 @@ export const KIND_TITLES: Record<Kind, string> = {
 
 export const seasonLabel = (n: number) => `S${n}`
 export const bookPartLabel = (p: BookPart) => `кн. ${bookOf(p)} «${BOOK_PART_TITLES[p]}»`
+
+export function eventYears(e: Event): string {
+  const parts: string[] = []
+  if (e.year !== undefined) parts.push(`${e.year} Э.О. (${feToIe(e.year)} И.Э.)`)
+  else if (e.yearLabel) parts.push(e.yearLabel.ru)
+  if (e.yearBook !== undefined && e.yearBook !== e.year) parts.push(`в книге ${e.yearBook} Э.О.`)
+  return parts.join(' · ')
+}

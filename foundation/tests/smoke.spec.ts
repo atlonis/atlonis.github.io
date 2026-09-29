@@ -26,3 +26,21 @@ test('несуществующий id — тост и список', async ({ pa
   await expect(page.getByRole('status')).toHaveText('Такой страницы нет')
   await expect(page).toHaveURL(/#\/list\/mule$/)
 })
+
+test('переход по связи в другую эру и «Назад» возвращают прежнюю карточку в её эре', async ({ page }) => {
+  await page.goto('/foundation/#/list/trantor-trial/character/hari-seldon')
+  await page.locator('aside.card .tabs button', { hasText: 'Связи' }).click()
+  await page.locator('aside.card .related button', { hasText: 'Основание' }).click()
+  await expect(page).toHaveURL(/#\/list\/terminus-crisis\/faction\/foundation$/)
+  await page.goBack()
+  await expect(page).toHaveURL(/#\/list\/trantor-trial\/character\/hari-seldon$/)
+  await expect(page.locator('aside.card h2')).toContainText('Хари Селдон')
+})
+
+test('исправленный deep link не оставляет мёртвой записи в истории', async ({ page }) => {
+  await page.goto('/foundation/#/list/trantor-trial')
+  await page.goto('/foundation/#/list/trantor-trial/character/bayta')
+  await expect(page).toHaveURL(/#\/list\/mule\/character\/bayta$/)
+  await page.goBack()
+  await expect(page).toHaveURL(/#\/list\/trantor-trial$/)
+})

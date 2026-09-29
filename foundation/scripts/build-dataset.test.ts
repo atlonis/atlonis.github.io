@@ -1,7 +1,8 @@
+import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { buildDataset } from './build-dataset'
 
-const CONTENT = new URL('../content', import.meta.url).pathname
+const CONTENT = fileURLToPath(new URL('../content', import.meta.url))
 
 describe('content/', () => {
   const { dataset, errors } = buildDataset(CONTENT)
@@ -34,7 +35,7 @@ describe('content/', () => {
 
 describe('buildDataset на битом контенте', () => {
   it('возвращает ошибки, а не датасет', () => {
-    const { dataset, errors } = buildDataset(new URL('./fixtures/broken', import.meta.url).pathname)
+    const { dataset, errors } = buildDataset(fileURLToPath(new URL('./fixtures/broken', import.meta.url)))
     expect(dataset).toBeUndefined()
     expect(errors.length).toBeGreaterThan(0)
     expect(errors.join('\n')).toContain('planet/oops.yaml')

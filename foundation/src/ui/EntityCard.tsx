@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { DataIndex } from '../data/indexDataset'
-import { KIND_TITLES, bookPartLabel, seasonLabel } from '../data/labels'
+import { KIND_TITLES, bookPartLabel, eventYears, seasonLabel } from '../data/labels'
 import type { NonEraOut } from '../data/schema'
 import { openEntity } from '../router/bind'
 import { useStore } from '../state/store'
@@ -31,6 +31,7 @@ export function EntityCard({ index }: { index: DataIndex }) {
   const e = entity && entity.kind !== 'era' ? (entity as NonEraOut) : undefined
   const tabs = e ? tabsFor(e) : []
   const [tab, setTab] = useState<TabKey>('show')
+  const active = tabs.includes(tab) ? tab : tabs[0]
 
   useEffect(() => { if (e) setTab(tabsFor(e)[0]) }, [e])
   useEffect(() => {
@@ -63,23 +64,24 @@ export function EntityCard({ index }: { index: DataIndex }) {
         {e.appearsIn.book?.map((p) => <span key={p}>{bookPartLabel(p)}</span>)}
         {e.eras.map((id) => <span key={id} className="era-tag">{index.byId.get(id)?.name.ru}</span>)}
       </div>
+      {e.kind === 'event' && <p className="years">{eventYears(e)}</p>}
       <nav className="tabs">
         {tabs.map((t) => (
-          <button key={t} type="button" className={t === tab ? 'active' : ''} onClick={() => setTab(t)}>{TAB_TITLES[t]}</button>
+          <button key={t} type="button" className={t === active ? 'active' : ''} onClick={() => setTab(t)}>{TAB_TITLES[t]}</button>
         ))}
       </nav>
       <div className="card-body">
-        {tab === 'show' && (
+        {active === 'show' && (
           <>
             {note && <p className="now"><b>В эту эру:</b> {note}</p>}
             {e.kind === 'character' && e.actor && <p className="muted">Актёр: {e.actor}</p>}
             <Paragraphs text={e.body?.ru} />
           </>
         )}
-        {tab === 'book' && <Paragraphs text={bookText} />}
-        {tab === 'related' && (
+        {active === 'book' && <Paragraphs text={bookText} />}
+        {active === 'related' && (
           <ul className="related">
-            {e.related.length === 0 && <li className="muted">Связей пока нет.</li>}
+            {e.related.length === 0 && !(e.book.counterpart && index.byId.get(e.book.counterpart)) && <li className="muted">Связей пока нет.</li>}
             {e.related.map((r) => {
               const target = index.byId.get(r.id)
               if (!target) return null

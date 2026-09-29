@@ -10,6 +10,7 @@ interface State {
   setMode: (mode: Mode) => void
   setEra: (eraId: string) => void
   select: (id: string | null) => void
+  open: (selectedId: string, eraId: string) => void
   setNotice: (notice: string | null) => void
 }
 
@@ -22,5 +23,6 @@ export const useStore = create<State>((set) => ({
   setMode: (mode) => set({ mode }),
   setEra: (eraId) => set({ eraId }),
   select: (selectedId) => set({ selectedId }),
+  open: (selectedId, eraId) => set({ selectedId, eraId }),
   setNotice: (notice) => set({ notice }),
 }))
