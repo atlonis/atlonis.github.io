@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import type { DataIndex } from '../data/indexDataset'
 import { useStore } from '../state/store'
 import { Background } from './Background'
+import { Chronicle } from './Chronicle'
 import { ContextLossGuard } from './ContextLossGuard'
 import { Core } from './Core'
 import { DebugStats } from './DebugStats'
@@ -67,6 +68,7 @@ export default function SceneRoot({ index }: { index: DataIndex }) {
         <Core />
         <Planets index={index} />
         <Thread index={index} />
+        <Chronicle index={index} />
       </Canvas>
     </GLErrorBoundary>
   )
