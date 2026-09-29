@@ -1,0 +1,3 @@
+[
+  { "name": "оболочка", "path": "dist/assets/index-*.js", "limit": "100 kB", "gzip": true }
+]
