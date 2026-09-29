@@ -38,3 +38,35 @@ main { max-width: 880px; margin: 0 auto; padding: 0 16px 96px; }
 .item:hover { border-color: var(--era); }
 .item i { color: var(--muted); font-style: normal; }
 .item span { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
+
+.spoilers { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 10px 16px; background: #2a2410; border-bottom: 1px solid #4a3d1e; color: #ffd17a; font-size: 14px; }
+.spoilers button { font: inherit; background: transparent; border: 1px solid #4a3d1e; color: inherit; border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--bg-2); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; color: var(--fg); z-index: 20; }
+
+.card { position: fixed; left: 0; right: 0; bottom: 0; max-height: 55dvh; display: flex; flex-direction: column; background: rgba(15, 19, 34, 0.96); backdrop-filter: blur(12px); border-top: 1px solid var(--line); border-radius: 16px 16px 0 0; padding: 12px 16px calc(16px + env(safe-area-inset-bottom)); z-index: 10; }
+.card-head { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
+.card .kind { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.card .badge { margin-left: 8px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); text-transform: none; letter-spacing: 0; }
+.card h2 { margin: 2px 0 8px; font-size: 22px; }
+.card h2 i { color: var(--muted); font-style: normal; font-weight: 400; }
+.card h2 small { display: block; color: var(--muted); font-weight: 400; font-size: 14px; }
+.close { font: inherit; font-size: 22px; line-height: 1; background: transparent; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.tags span { font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; color: var(--muted); }
+.tags .era-tag { color: var(--fg); }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.tabs button { font: inherit; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 6px 10px; cursor: pointer; }
+.tabs button.active { color: var(--fg); border-bottom-color: var(--fg); }
+.card-body { overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; min-height: 0; }
+.card-body p { margin: 0 0 10px; }
+.now { background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+.related { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.related button { font: inherit; width: 100%; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--fg); cursor: pointer; }
+.related button span { display: block; font-size: 13px; color: var(--muted); }
+
+@media (min-width: 900px) {
+  .card { left: auto; top: 0; bottom: 0; width: 400px; max-height: none; border-radius: 0; border-top: 0; border-left: 1px solid var(--line); padding-top: 16px; }
+  main { padding-right: 16px; }
+  body:has(.card) main { max-width: calc(100% - 432px); margin-left: 0; padding-left: 24px; }
+}

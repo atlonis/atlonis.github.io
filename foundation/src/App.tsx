@@ -3,11 +3,14 @@ import type { DataIndex } from './data/indexDataset'
 import { loadDataset } from './data/load'
 import { bindRouter } from './router/bind'
 import { useStore } from './state/store'
+import { EntityCard } from './ui/EntityCard'
 import { EraNav } from './ui/EraNav'
 import { ErrorView } from './ui/ErrorView'
 import { ListView } from './ui/ListView'
 import { Loading } from './ui/Loading'
 import { ModeToggle } from './ui/ModeToggle'
+import { SpoilerBanner } from './ui/SpoilerBanner'
+import { Toast } from './ui/Toast'
 
 type LoadState = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; index: DataIndex }
 
@@ -34,6 +37,7 @@ export default function App() {
 
   return (
     <>
+      <SpoilerBanner />
       <header className="top">
         <h1>Основание: карта вселенной</h1>
         <ModeToggle />
@@ -43,6 +47,8 @@ export default function App() {
         {mode !== 'list' && <p className="notice">3D-режимы «Хроника» и «Карта» появятся в следующей версии. Пока — список.</p>}
         <ListView index={index} />
       </main>
+      <EntityCard index={index} />
+      <Toast />
     </>
   )
 }
