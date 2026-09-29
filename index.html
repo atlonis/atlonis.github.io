@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lab — эксперименты</title>
+<meta name="description" content="Витрина экспериментов: интерактивные карты, визуализации, игрушки.">
+<style>
+  :root { color-scheme: dark; --bg:#0b0d14; --fg:#e8e9f0; --muted:#8a90a6; --card:#131624; --line:#232840; --accent:#7aa2ff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 32px; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  li a { color: var(--fg); text-decoration: none; font-weight: 600; font-size: 18px; }
+  li a:hover { color: var(--accent); }
+  .title { font-weight: 600; font-size: 18px; }
+  .desc { color: var(--muted); margin: 4px 0 0; }
+  .meta { display:flex; gap: 10px; align-items:center; margin-top: 8px; font-size: 13px; color: var(--muted); }
+  .tag { border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; }
+  .tag.wip { color: #ffd17a; border-color: #4a3d1e; }
+  .empty { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>lab</h1>
+  <p class="sub">Эксперименты. Что-то доделано, что-то в работе.</p>
+  <ul id="list"><li class="empty">Загружаю список…</li></ul>
+</main>
+<script>
+  const statusLabel = { done: 'готово', 'in-progress': 'в работе', archived: 'архив' };
+  fetch('experiments.json').then(r => r.json()).then(items => {
+    const ul = document.getElementById('list');
+    ul.innerHTML = '';
+    if (!items.length) { ul.innerHTML = '<li class="empty">Пока пусто.</li>'; return; }
+    for (const it of items) {
+      const li = document.createElement('li');
+      const head = it.status === 'done'
+        ? `<a href="${it.slug}/">${it.title}</a>`
+        : `<span class="title">${it.title}</span>`;
+      li.innerHTML = `${head}<p class="desc">${it.description}</p>
+        <div class="meta"><span class="tag ${it.status === 'in-progress' ? 'wip' : ''}">${statusLabel[it.status] || it.status}</span><span>${it.date}</span></div>`;
+      ul.appendChild(li);
+    }
+  }).catch(() => { document.getElementById('list').innerHTML = '<li class="empty">Список не загрузился.</li>'; });
+</script>
+</body>
+</html>
